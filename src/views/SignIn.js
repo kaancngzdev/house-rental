@@ -12,6 +12,7 @@ import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { signInUser } from "../back-end/signInFB";
 
 function Copyright(props) {
   return (
@@ -34,13 +35,20 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignIn() {
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    const formData = new FormData(event.currentTarget);
+    const email = formData.get("email");
+    const password = formData.get("password");
+
+    try {
+      const user = await signInUser(email, password);
+      console.log("User signed in:", user);
+      // Redirect or do something with the signed-in user
+    } catch (error) {
+      console.error("Sign-in error:", error.message);
+      // Show an error message to the user
+    }
   };
 
   return (
