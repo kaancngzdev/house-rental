@@ -7,7 +7,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { addHouseToFirestore } from "../back-end/addHouseFB";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
 import { Link } from "react-router-dom"; // Import Link from react-router-dom
-import { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 
 const theme = createTheme({
   palette: {
@@ -103,47 +103,64 @@ export default function BasicTextFields() {
           Add House
         </Typography>
         <TextField
-          id="standard-basic-imageLink"
-          label="Image Link"
-          variant="standard"
-          error={Boolean(errorText.imageLink)}
-          helperText={errorText.imageLink}
-        />
-        <TextField
-          id="standard-basic-propertyType"
-          label="Property Type"
-          variant="standard"
-          error={Boolean(errorText.propertyType)}
-          helperText={errorText.propertyType}
-        />
-        <TextField
-          id="standard-basic-numOfRooms"
-          label="Number Of Rooms"
-          variant="standard"
-          error={Boolean(errorText.numOfRooms)}
-          helperText={errorText.numOfRooms}
-        />
-        <TextField
-          id="standard-basic-area"
-          label="Area"
-          variant="standard"
-          error={Boolean(errorText.area)}
-          helperText={errorText.area}
-        />
-        <TextField
-          id="standard-basic-price"
-          label="Price"
-          variant="standard"
-          error={Boolean(errorText.price)}
-          helperText={errorText.price}
-        />
-        <TextField
-          id="standard-basic-description"
-          label="Description"
-          variant="standard"
-          error={Boolean(errorText.description)}
-          helperText={errorText.description}
-        />
+  id="standard-basic-imageLink"
+  label="Image Link"
+  variant="standard"
+  error={Boolean(errorText.imageLink)}
+  helperText={errorText.imageLink}
+  value={imageUrl}
+  onChange={(e) => setImageUrl(e.target.value)}
+/>
+
+<TextField
+  id="standard-basic-propertyType"
+  label="Property Type"
+  variant="standard"
+  error={Boolean(errorText.propertyType)}
+  helperText={errorText.propertyType}
+  value={propertyType}
+  onChange={(e) => setPropertyType(e.target.value)}
+/>
+
+<TextField
+  id="standard-basic-numOfRooms"
+  label="Number Of Rooms"
+  variant="standard"
+  error={Boolean(errorText.numOfRooms)}
+  helperText={errorText.numOfRooms}
+  value={numRooms}
+  onChange={(e) => setNumRooms(e.target.value)}
+/>
+
+<TextField
+  id="standard-basic-area"
+  label="Area"
+  variant="standard"
+  error={Boolean(errorText.area)}
+  helperText={errorText.area}
+  value={area}
+  onChange={(e) => setArea(e.target.value)}
+/>
+
+<TextField
+  id="standard-basic-price"
+  label="Price"
+  variant="standard"
+  error={Boolean(errorText.price)}
+  helperText={errorText.price}
+  value={price}
+  onChange={(e) => setPrice(e.target.value)}
+/>
+
+<TextField
+  id="standard-basic-description"
+  label="Description"
+  variant="standard"
+  error={Boolean(errorText.description)}
+  helperText={errorText.description}
+  value={description}
+  onChange={(e) => setDescription(e.target.value)}
+/>
         <Button
           variant="contained"
           color="primary"
