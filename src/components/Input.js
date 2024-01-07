@@ -4,6 +4,10 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { addHouseToFirestore } from "../back-end/addHouseFB";
+import { getFirestore, collection, getDocs } from "firebase/firestore";
+import { Link } from "react-router-dom"; // Import Link from react-router-dom
+import { useState, useEffect } from 'react';
 
 const theme = createTheme({
   palette: {
@@ -14,6 +18,29 @@ const theme = createTheme({
 });
 
 export default function BasicTextFields() {
+  const [propertyType, setPropertyType] = useState("");
+  const [numRooms, setNumRooms] = useState("");
+  const [area, setArea] = useState("");
+  const [price, setPrice] = useState("");
+  const [description, setDescription] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
+  const [houses, setHouses] = useState([]);
+  const db = getFirestore();
+
+  useEffect(() => {
+    async function fetchHouses() {
+      const housesCollection = collection(db, "Houses");
+      const housesSnapshot = await getDocs(housesCollection);
+      const housesData = housesSnapshot.docs.map((doc) => ({
+        id: doc.id, // Include the document ID as 'id' in the data
+        ...doc.data(),
+      }));
+      setHouses(housesData);
+    }
+
+    fetchHouses();
+  }, [db]);
+
   const [errorText, setErrorText] = React.useState({
     imageLink: "",
     propertyType: "",
@@ -23,36 +50,39 @@ export default function BasicTextFields() {
     description: "",
   });
 
-  const handleAddButtonClick = () => {
-    // Check if any of the text fields are empty
-    const fields = [
-      "imageLink",
-      "propertyType",
-      "numOfRooms",
-      "area",
-      "price",
-      "description",
-    ];
-    let hasError = false;
-    const newErrorText = {};
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const houseData = {
+      propertyType,
+      numRooms,
+      area,
+      price,
+      description,
+      imageUrl,
+    };
 
-    fields.forEach((field) => {
-      if (!document.getElementById(`standard-basic-${field}`).value.trim()) {
-        newErrorText[field] = "This field is required.";
-        hasError = true;
-      } else {
-        newErrorText[field] = "";
-      }
-    });
+    try {
+      const response = await addHouseToFirestore(houseData);
+      console.log(response);
 
-    if (hasError) {
-      setErrorText(newErrorText);
-      return;
+      // Fetch and update houses after adding a new house
+      const housesCollection = collection(db, "Houses");
+      const housesSnapshot = await getDocs(housesCollection);
+      const housesData = housesSnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setHouses(housesData);
+
+      setPropertyType("");
+      setNumRooms("");
+      setArea("");
+      setPrice("");
+      setDescription("");
+      setImageUrl("");
+    } catch (error) {
+      console.error("Error adding house to Firestore:", error);
     }
-
-    // Add your logic for handling the "Add" button click when all fields are filled
-    // For now, let's just log a message to the console
-    console.log("Add button clicked");
   };
 
   return (
@@ -118,7 +148,7 @@ export default function BasicTextFields() {
           variant="contained"
           color="primary"
           style={{ color: "white" }}
-          onClick={handleAddButtonClick}
+          onClick={handleSubmit}
         >
           Add
         </Button>
