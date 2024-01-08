@@ -21,7 +21,7 @@ const cardData = [
     propertyType: "Cottage",
     numberOfRooms: 3,
     squareMeters: 90,
-    price: 5000,
+    price: 5001,
     image: require("../assets/images/card/h1p1.jpg"),
     title: "house2",
   },

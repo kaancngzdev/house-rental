@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import MediaCard from "../components/Card.js";
 import "../styles.css";
 import { cardData } from "../const/Const.js";
 import NestedList from "../components/Filter.js";
+
 export default function Houses() {
   const customCardStyle = {
     backgroundColor: "#eaf7f7",
@@ -11,14 +12,20 @@ export default function Houses() {
     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
   };
 
+  const [filteredProperties, setFilteredProperties] = useState(cardData);
+
   return (
     <div className="Houses">
       <div className="filter-container">
-        <NestedList />
+        <NestedList setFilteredProperties={setFilteredProperties} />
       </div>
 
-      {cardData.map((card) => (
-        <MediaCard key={card.id} customStyle={customCardStyle} {...card} />
+      {filteredProperties.map((property) => (
+        <MediaCard
+          key={property.id}
+          customStyle={customCardStyle}
+          {...property}
+        />
       ))}
     </div>
   );

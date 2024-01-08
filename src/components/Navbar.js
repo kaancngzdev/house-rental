@@ -140,7 +140,14 @@ export default function ButtonAppBar() {
                           aria-labelledby="composition-button"
                           onKeyDown={handleListKeyDown}
                         >
-                          <MenuItem>Profile</MenuItem>
+                          <MenuItem
+                            onClick={(event) => {
+                              navigate("/profile");
+                              handleClose(event);
+                            }}
+                          >
+                            Profile
+                          </MenuItem>
                           <MenuItem
                             onClick={(event) => {
                               navigate("/adminpanel");

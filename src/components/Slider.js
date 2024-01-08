@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -14,6 +14,15 @@ export default function SimpleSlider() {
     autoplay: false,
   };
 
+  const arrowStyles = {
+    fontSize: "32px", // Increase the font size for larger arrows
+    color: "grey",
+  };
+
+  const arrowHoverStyles = {
+    color: "#333", // Change this to the desired hover color
+  };
+
   return (
     <div>
       <Slider {...settings}>
@@ -23,6 +32,27 @@ export default function SimpleSlider() {
           </div>
         ))}
       </Slider>
+
+      {/* Inline styles for slider arrows */}
+      <style>{`
+        .slick-prev, .slick-next {
+          ${arrowStyles}
+        }
+
+        .slick-prev:hover, .slick-next:hover {
+          ${arrowHoverStyles}
+        }
+
+        .slick-prev {
+          left: 10px;
+          z-index: 1; /* Ensure the left arrow is above the slides */
+        }
+
+        .slick-next {
+          right: 10px;
+          z-index: 1; /* Ensure the right arrow is above the slides */
+        }
+      `}</style>
     </div>
   );
 }

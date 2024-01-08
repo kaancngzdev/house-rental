@@ -19,6 +19,7 @@ import AdminPanel from "./views/AdminPanel.js";
 
 // layouts
 import MainLayout from "./layouts/MainLayout.js";
+import Profile from "./views/Profile.js";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -30,6 +31,7 @@ const router = createBrowserRouter(
       <Route path="signup" element={<SignUp />} />
       <Route path="learnmore" element={<LearnMore />} />
       <Route path="adminpanel" element={<AdminPanel />} />
+      <Route path="profile" element={<Profile />} />
     </Route>
   )
 );
