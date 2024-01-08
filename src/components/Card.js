@@ -18,7 +18,8 @@ export default function MediaCard(props) {
     price,
     image,
     title,
-    id
+    id,
+    onAddFavorite
   } = props;
   const navigate = useNavigate();
 
@@ -74,7 +75,7 @@ export default function MediaCard(props) {
         <Button size="small" onClick={() => navigate(`../learnmore/${id}`)}>
           Learn More
         </Button>
-        <Button size="small">Add Favorites</Button>
+        <Button size="small" onClick={() => onAddFavorite(id)}>Add Favorites</Button>
       </CardActions>
     </Card>
   );

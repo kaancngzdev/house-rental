@@ -35,6 +35,7 @@ function Copyright(props) {
 
 const defaultTheme = createTheme();
 
+
 export default function SignIn() {
   const [isLoggedIn, setIsLoggedIn] =  React.useState(() => JSON.parse(localStorage.getItem('auth')) || false);
   const [user, setUser] = React.useState(() => JSON.parse(localStorage.getItem('user')) || null);
@@ -47,12 +48,13 @@ export default function SignIn() {
     try {
       const user = await signInUser(email, password);
       console.log("User signed in:", user);
-      const userData = { firstName: formData.get("firstName"), email: formData.get("email") }; // Replace with actual user data
+      const userData = { firstName: formData.get("firstName"), email: formData.get("email"), role: ""}; // Replace with actual user data
       localStorage.setItem('user', JSON.stringify(userData)); // Save user data to localStorage
       localStorage.setItem('auth', JSON.stringify(true)); // Set auth to true after sign-in
       setIsLoggedIn(true); // Update the isLoggedIn state
       setUser(userData);
       console.log(isLoggedIn);
+      console.log(userData);
       window.location.reload(false);
       
       // Redirect or do something with the signed-in user

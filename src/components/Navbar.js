@@ -28,6 +28,7 @@ export default function ButtonAppBar() {
     }
 
     setOpen(false);
+    window.location.reload(false);
   };
 
   function handleListKeyDown(event) {
@@ -51,7 +52,7 @@ export default function ButtonAppBar() {
 
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] =  React.useState(() => JSON.parse(localStorage.getItem('auth')) || false);
-  const [user, setUser] = React.useState(() => JSON.parse(localStorage.getItem('user')) || null);
+  const [user, setUser] = React.useState(() => JSON.parse(localStorage.getItem('user2')) || null);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -137,14 +138,8 @@ export default function ButtonAppBar() {
                           aria-labelledby="composition-button"
                           onKeyDown={handleListKeyDown}
                         >
-                          <MenuItem
-                            onClick={(event) => {
-                              navigate("/profile");
-                              handleClose(event);
-                            }}
-                          >
-                            Profile
-                          </MenuItem>
+                          {console.log("User Role:", user.role)}
+                        {user.role === "admin" && (
                           <MenuItem
                             onClick={(event) => {
                               navigate("/adminpanel");
@@ -153,6 +148,7 @@ export default function ButtonAppBar() {
                           >
                             Admin Panel
                           </MenuItem>
+                        )}
                           <MenuItem onClick={handleClose}>Sign Out</MenuItem>
                         </MenuList>
                       </ClickAwayListener>
