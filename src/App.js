@@ -15,7 +15,7 @@ import AboutUs from "./views/AboutUs.js";
 import SignUp from "./views/SignUp.js";
 import SignIn from "./views/SignIn.js";
 import LearnMore from "./views/LearnMore.js";
-import AdminPanel from "./views/AdminPanel.js";
+import HousePage from "./views/housePage.js";
 
 // layouts
 import MainLayout from "./layouts/MainLayout.js";
@@ -32,6 +32,8 @@ const router = createBrowserRouter(
       <Route path="learnmore" element={<LearnMore />} />
       <Route path="adminpanel" element={<AdminPanel />} />
       <Route path="profile" element={<Profile />} />
+      <Route path="house/:id" element={<HousePage />} />{" "}
+      {/* Use element prop */}
     </Route>
   )
 );
