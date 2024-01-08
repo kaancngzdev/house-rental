@@ -22,6 +22,7 @@ export default function ButtonAppBar() {
   };
 
   const handleClose = (event) => {
+    localStorage.removeItem('auth');
     if (anchorRef.current && anchorRef.current.contains(event.target)) {
       return;
     }
@@ -49,7 +50,8 @@ export default function ButtonAppBar() {
   }, [open]);
 
   const navigate = useNavigate();
-  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+  const [isLoggedIn, setIsLoggedIn] =  React.useState(() => JSON.parse(localStorage.getItem('auth')) || false);
+  const [user, setUser] = React.useState(() => JSON.parse(localStorage.getItem('user')) || null);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -89,20 +91,15 @@ export default function ButtonAppBar() {
             </Button>
           </div>
           <Box sx={{ marginLeft: "auto" }}>
-            <Button color="inherit" onClick={() => navigate("/signin")}>
+          {!isLoggedIn &&<Button color="inherit" onClick={() => navigate("/signin")}>
               Sign In
-            </Button>
-            <Button color="inherit" onClick={() => navigate("/signup")}>
+            </Button>}
+            {!isLoggedIn &&<Button color="inherit" onClick={() => navigate("/signup")}>
               Sign Up
-            </Button>
-            {isLoggedIn && (
-              <Button color="inherit" onClick={() => navigate("/signup")}>
-                deneme
-              </Button>
-            )}
+            </Button>}
           </Box>
           <Stack direction="row" spacing={2}>
-            <div>
+          {isLoggedIn &&<div>
               <Button
                 ref={anchorRef}
                 id="composition-button"
@@ -156,7 +153,7 @@ export default function ButtonAppBar() {
                   </Grow>
                 )}
               </Popper>
-            </div>
+            </div>}
           </Stack>
         </Toolbar>
       </AppBar>
