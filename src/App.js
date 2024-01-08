@@ -16,7 +16,7 @@ import SignUp from "./views/SignUp.js";
 import SignIn from "./views/SignIn.js";
 import LearnMore from "./views/LearnMore.js";
 import HousePage from "./views/housePage.js";
-
+import AdminPanel from "./views/AdminPanel.js"
 // layouts
 import MainLayout from "./layouts/MainLayout.js";
 import Profile from "./views/Profile.js";
