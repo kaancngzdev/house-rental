@@ -62,6 +62,7 @@ export default function Houses() {
           squaremeters={house.squaremeters}
           price={house.price}
           image={house.imageUrl}
+          id={house.id}
         ></MediaCard>
       ))}
     </div>
