@@ -71,7 +71,7 @@ export default function MediaCard(props) {
           gap: "30px",
         }}
       >
-        <Button size="small" onClick={() => navigate('House ${house.id}')}>
+        <Button size="small" onClick={() => navigate("/learnMore/${id}")}>
           Learn More
         </Button>
         <Button size="small">Add Favorites</Button>
