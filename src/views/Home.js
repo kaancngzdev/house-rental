@@ -2,7 +2,6 @@ import React from "react";
 import SimpleSlider from "../components/Slider.js";
 import CardSlider from "../components/CardSlider.js";
 import Box from "@mui/material/Box";
-import { images } from "../const/Const.js";
 export default function Home() {
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
@@ -11,8 +10,15 @@ export default function Home() {
           maxWidth: "2000px",
         }}
       >
-        <SimpleSlider></SimpleSlider>
-        <CardSlider />
+        <div style={{ marginBottom: "5rem" }}>
+          <SimpleSlider></SimpleSlider>
+        </div>
+        <div style={{}}>
+          <h1>Most Popular Houses</h1>
+        </div>
+        <div>
+          <CardSlider />
+        </div>
       </Box>
     </div>
   );
