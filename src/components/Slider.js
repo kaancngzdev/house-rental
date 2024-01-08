@@ -6,21 +6,21 @@ import { images } from "../const/Const.js";
 
 export default function SimpleSlider() {
   const settings = {
-    dots: true,
+    dots: false,
     infinite: true,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    autoplay: false,
+    autoplay: true,
   };
 
   const arrowStyles = {
-    fontSize: "32px", // Increase the font size for larger arrows
+    fontSize: "32px",
     color: "grey",
   };
 
   const arrowHoverStyles = {
-    color: "#333", // Change this to the desired hover color
+    color: "#333",
   };
 
   return (

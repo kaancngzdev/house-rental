@@ -1,3 +1,4 @@
+// NestedList.js
 import React from "react";
 import ListSubheader from "@mui/material/ListSubheader";
 import List from "@mui/material/List";
@@ -6,9 +7,9 @@ import ListItemText from "@mui/material/ListItemText";
 import Collapse from "@mui/material/Collapse";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
-import { cardData } from "../const/Const.js"; // Assuming you have the data here
+import { getFirestore, collection, getDocs } from "firebase/firestore";
 
-export default function NestedList({ setFilteredProperties }) {
+export default function NestedList({ setFilteredProperties, db }) {
   const [priceOpen, setPriceOpen] = React.useState(false);
   const [propertyTypeOpen, setPropertyTypeOpen] = React.useState(false);
   const [numberOfRoomsOpen, setNumberOfRoomsOpen] = React.useState(false);
@@ -36,7 +37,6 @@ export default function NestedList({ setFilteredProperties }) {
   };
 
   const handleResetFilters = () => {
-    // Reset all filters
     setSelectedFilters({
       price: null,
       propertyType: null,
@@ -45,30 +45,43 @@ export default function NestedList({ setFilteredProperties }) {
   };
 
   React.useEffect(() => {
-    // Apply filters to the properties based on the selected filters
-    let filteredProperties = cardData;
+    async function fetchFilteredHouses() {
+      try {
+        const housesCollection = collection(db, "Houses");
+        const housesSnapshot = await getDocs(housesCollection);
+        const housesData = housesSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
 
-    if (selectedFilters.price !== null) {
-      filteredProperties = filteredProperties.filter(
-        (property) => property.price <= selectedFilters.price
-      );
+        let filteredProperties = housesData;
+
+        if (selectedFilters.price !== null) {
+          filteredProperties = filteredProperties.filter(
+            (property) => property.price <= selectedFilters.price
+          );
+        }
+
+        if (selectedFilters.propertyType !== null) {
+          filteredProperties = filteredProperties.filter(
+            (property) => property.propertyType === selectedFilters.propertyType
+          );
+        }
+
+        if (selectedFilters.numberOfRooms !== null) {
+          filteredProperties = filteredProperties.filter(
+            (property) => property.numRooms == selectedFilters.numberOfRooms
+          );
+        }
+
+        setFilteredProperties(filteredProperties);
+      } catch (error) {
+        console.error("Error fetching and filtering houses:", error);
+      }
     }
 
-    if (selectedFilters.propertyType !== null) {
-      filteredProperties = filteredProperties.filter(
-        (property) => property.propertyType === selectedFilters.propertyType
-      );
-    }
-
-    if (selectedFilters.numberOfRooms !== null) {
-      filteredProperties = filteredProperties.filter(
-        (property) => property.numberOfRooms === selectedFilters.numberOfRooms
-      );
-    }
-
-    // Update the filtered properties state
-    setFilteredProperties(filteredProperties);
-  }, [selectedFilters, setFilteredProperties]);
+    fetchFilteredHouses();
+  }, [selectedFilters, setFilteredProperties, db]);
 
   return (
     <List

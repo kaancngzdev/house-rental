@@ -1,12 +1,16 @@
+// Houses.js
 import React, { useState, useEffect } from "react";
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import "../styles.css";
 import MediaCard from "../components/Card";
-import { doc, setDoc, updateDoc,getDoc } from "firebase/firestore";
 
-// Firebase configuration
+import { doc, setDoc, updateDoc,getDoc } from "firebase/firestore";
+import NestedList from "../components/Filter.js";
+
+
+// Replace these values with your actual Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyDr5IP84sJViNSI_XLit44MoCECUq2seko",
   authDomain: "houserent-5579d.firebaseapp.com",
@@ -17,11 +21,11 @@ const firebaseConfig = {
   measurementId: "G-SRNE2DQ6CZ",
 };
 
-// Initialize Firebase app
 const firebaseApp = initializeApp(firebaseConfig);
 
 export default function Houses() {
   const [houses, setHouses] = useState([]);
+  const [filteredProperties, setFilteredProperties] = useState([]);
   const db = getFirestore(firebaseApp);
   const navigate = useNavigate();
 
@@ -35,6 +39,7 @@ export default function Houses() {
           ...doc.data(),
         }));
         setHouses(housesData);
+        setFilteredProperties(housesData);
       } catch (error) {
         console.error("Error fetching houses:", error);
       }
@@ -44,7 +49,6 @@ export default function Houses() {
   }, [db]);
 
   const handleLearnMore = (id) => {
-    // Handle navigation to individual house details using the house id
     navigate(`/houses/${id}`);
   };
 
@@ -71,14 +75,18 @@ export default function Houses() {
     } catch (error) {
       console.error("Error adding house to favorites:", error);
     }
+
+
   };
   
   
 
   return (
     <div className="Houses">
-      {houses.map((house) => (
+      <NestedList setFilteredProperties={setFilteredProperties} db={db} />
+      {filteredProperties.map((house) => (
         <MediaCard
+          key={house.id}
           description={house.description}
           propertyType={house.propertyType}
           numberOfRooms={house.numRooms}
@@ -87,7 +95,9 @@ export default function Houses() {
           image={house.imageUrl}
           id={house.id}
           onAddFavorite={(id) => handleAddFavorite(id)}
+          onLearnMore={() => handleLearnMore(house.id)}
         ></MediaCard>
+
       ))}
     </div>
   );
