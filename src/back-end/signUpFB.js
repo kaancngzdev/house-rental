@@ -3,6 +3,7 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getFirestore } from "firebase/firestore";
 import {  collection, addDoc, query, where, getDocs } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 
 var firebaseConfig = {
   apiKey: "AIzaSyDr5IP84sJViNSI_XLit44MoCECUq2seko",
@@ -35,8 +36,11 @@ const addUserToFirestore = async (userData) => {
   }
 
   try {
-    await addDoc(collection(db, "Users"), userData);
+    const result = await addDoc(collection(db, "Users"), userData);
+    const userRef = doc(db, "users", result.id); // Access 'id' instead of 'userId'
+    await setDoc(userRef, userData);
     return 'User added to Firestore';
+    
   } catch (error) {
     throw error;
   }

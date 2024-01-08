@@ -33,13 +33,41 @@ const checkIfUserExists = async (email, password) => {
   return !querySnapshot.empty;
 };
 
+const getUserRole = async (email) => {
+  const usersRef = collection(db, "Users");
+  const q = query(usersRef, where("email", "==", email));
+
+  const querySnapshot = await getDocs(q);
+  if (querySnapshot.empty) {
+    throw new Error("User not found.");
+  }
+
+  let userRole;
+  querySnapshot.forEach((doc) => {
+    const { role } = doc.data();
+    userRole = role;
+  });
+
+  return userRole;
+};
+
 const signInUser = async (email, password) => {
   const userExists = await checkIfUserExists(email, password);
-
+  const userData = {
+    
+    email: email,
+    role: await getUserRole(email), // Assuming you have fetched the role from the database
+  };
+  console.log(await getUserRole(email));
+  localStorage.setItem('user', JSON.stringify(userData));
+  localStorage.setItem('user2', JSON.stringify(userData));
+  localStorage.setItem('auth', JSON.stringify(true));
+  let result = localStorage.getItem('user2', JSON.stringify(userData));
+  console.log("asdasd"+ result);
   if (!userExists) {
     throw new Error("Invalid credentials. User not found.");
   }
-
+  
   return { email };
 };
 
