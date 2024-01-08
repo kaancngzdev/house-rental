@@ -7,6 +7,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import "../styles.css";
 import { useNavigate } from "react-router-dom";
+
 export default function MediaCard(props) {
   const {
     customStyle,
@@ -17,7 +18,6 @@ export default function MediaCard(props) {
     price,
     image,
     title,
-    id,
   } = props;
   const navigate = useNavigate();
 
@@ -29,6 +29,7 @@ export default function MediaCard(props) {
         display: "flex",
         flexDirection: "row",
         justifyContent: "space-between",
+        backgroundColor: "#c8e8dd",
       }}
     >
       <CardMedia

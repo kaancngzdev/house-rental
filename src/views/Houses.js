@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
-import { Card, CardActions, CardContent, CardMedia, Button, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import "../styles.css";
+import MediaCard from "../components/Card";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -13,7 +13,7 @@ const firebaseConfig = {
   storageBucket: "houserent-5579d.appspot.com",
   messagingSenderId: "1083217632660",
   appId: "1:1083217632660:web:ea27e18e37fab3bf07c381",
-  measurementId: "G-SRNE2DQ6CZ"
+  measurementId: "G-SRNE2DQ6CZ",
 };
 
 // Initialize Firebase app
@@ -55,36 +55,14 @@ export default function Houses() {
   return (
     <div className="Houses">
       {houses.map((house) => (
-        <Card key={house.id} sx={{ maxWidth: 345, margin: 10 }}>
-          <CardMedia
-            component="img"
-            height="140"
-            image={house.imageUrl} 
-            alt={house.propertyType} 
-          />
-          <CardContent>
-            <Typography gutterBottom variant="h5" component="div">
-              {house.propertyType}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Number of Rooms: {house.numRooms}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Area: {house.area} m²
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Price: {house.price} TL
-            </Typography>
-          </CardContent>
-          <CardActions>
-            <Button size="small" onClick={() => handleLearnMore(house.id)}>
-              Learn More
-            </Button>
-            <Button size="small" onClick={() => handleAddFavorite(house.id)}>
-              Add Favorite
-            </Button>
-          </CardActions>
-        </Card>
+        <MediaCard
+          description={house.description}
+          propertyType={house.propertyType}
+          numberOfRooms={house.numRooms}
+          squaremeters={house.squaremeters}
+          price={house.price}
+          image={house.imageUrl}
+        ></MediaCard>
       ))}
     </div>
   );
