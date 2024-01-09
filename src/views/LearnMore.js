@@ -87,29 +87,38 @@ export default function LearnMore() {
       const datesToAdd = selectedDates.map((date) =>
         new Date(date).toISOString()
       );
-
+  
       if (datesToAdd.length === 2 && datesToAdd[0] !== datesToAdd[1]) {
         const [start, end] = datesToAdd.map((date) => new Date(date));
-
+  
+        const userRef = doc(db, "Users", user.id); // Replace 'userId' with the actual user ID
+        const userDocSnapshot = await getDoc(userRef);
+        const userData = userDocSnapshot.data();
+  
+        if (userData && userData.bookedHouse) {
+          alert("You already have a booked house. You cannot book another one.");
+          return;
+        }
+  
         const houseRef = doc(db, `Houses/${id}`);
         const houseDocSnapshot = await getDoc(houseRef);
         const houseData = houseDocSnapshot.data();
-
+  
         if (houseData.bookedDates && houseData.bookedDates.length > 0) {
           const bookedDates = houseData.bookedDates;
-
+  
           const isStartOrEndBooked = bookedDates.some((bookedDate) => {
             const date = new Date(bookedDate);
             return isDateInRange(date, start, end);
           });
-
+  
           if (isStartOrEndBooked) {
             const [bookedStartDate, bookedEndDate] = bookedDates.map((date) => new Date(date));
             alert(`This house is booked between ${bookedStartDate.toDateString()} and ${bookedEndDate.toDateString()}`);
             return;
           }
         }
-
+  
         await addDatesToBookedDates(start, end);
         console.log("House successfully booked!");
       } else {
@@ -119,6 +128,7 @@ export default function LearnMore() {
       console.error("Error booking house:", error);
     }
   };
+  
 
   const handleDateChange = (dates) => {
     setSelectedDates(dates);
