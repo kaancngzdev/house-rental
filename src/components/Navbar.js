@@ -22,13 +22,13 @@ export default function ButtonAppBar() {
   };
 
   const handleClose = (event) => {
-    localStorage.removeItem('auth');
+    
     if (anchorRef.current && anchorRef.current.contains(event.target)) {
       return;
     }
 
     setOpen(false);
-    window.location.reload(false);
+    //window.location.reload(false);
   };
 
   function handleListKeyDown(event) {
@@ -38,6 +38,10 @@ export default function ButtonAppBar() {
     } else if (event.key === "Escape") {
       setOpen(false);
     }
+  }
+  function handleSignOut(){
+    localStorage.removeItem('auth');
+    window.location.reload(false);
   }
 
   // return focus to the button when we transitioned from !open -> open
@@ -149,7 +153,7 @@ export default function ButtonAppBar() {
                             Admin Panel
                           </MenuItem>
                         )}
-                          <MenuItem onClick={handleClose}>Sign Out</MenuItem>
+                          <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
                         </MenuList>
                       </ClickAwayListener>
                     </Paper>
