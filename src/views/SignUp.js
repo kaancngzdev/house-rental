@@ -49,6 +49,7 @@ export default function SignUp() {
 
     try {
       const result = await addUserToFirestore(userData);
+      console.log("User added");
       console.log("User added to Firestore:", result);
       navigate("/signin");
       // Handle success, e.g., redirect to a new page or show a success message

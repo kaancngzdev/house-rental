@@ -39,6 +39,7 @@ const getUserRole = async (email) => {
 
   const querySnapshot = await getDocs(q);
   if (querySnapshot.empty) {
+    alert("User not found.")
     throw new Error("User not found.");
   }
 
@@ -56,6 +57,7 @@ const getUserId = async (email) => {
 
   const querySnapshot = await getDocs(q);
   if (querySnapshot.empty) {
+  
     throw new Error("User not found.");
   }
 
@@ -84,6 +86,7 @@ const signInUser = async (email, password) => {
   let result = localStorage.getItem('user2', JSON.stringify(userData));
   console.log("asdasd"+ result);
   if (!userExists) {
+    alert("Invalid credentials. User not found.")
     throw new Error("Invalid credentials. User not found.");
   }
   
