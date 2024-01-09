@@ -32,6 +32,14 @@ export default function AdminPanelButtons() {
       >
         Delete House
       </Button>
+      <Button
+        onClick={() => navigate("/deletebooking")}
+        variant="contained"
+        color="primary"
+        sx={{ color: "white", backgroundColor: "green" }}
+      >
+        Delete Booking
+      </Button>
     </Box>
   );
 }

@@ -19,6 +19,7 @@ import AdminPanel from "./views/AdminPanel.js";
 import Profile from "./views/Profile.js";
 import AdminPanelButtons from "./views/AdminPanelButtons.js";
 import DeleteHouse from "./views/DeleteHouse.js";
+import DeleteBooking from "./views/DeleteBooking.js";
 // layouts
 import MainLayout from "./layouts/MainLayout.js";
 
@@ -35,6 +36,7 @@ const router = createBrowserRouter(
       <Route path="deletehouse" element={<DeleteHouse />} />
       <Route path="profile" element={<Profile />} />
       <Route path="learnmore/:id" element={<LearnMore />} />
+      <Route path="deletebooking" element={<DeleteBooking />} />
       <Route path="adminpanelbuttons" element={<AdminPanelButtons />} />
       {/* Use element prop */}
     </Route>
