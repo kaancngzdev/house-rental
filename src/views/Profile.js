@@ -19,41 +19,82 @@ const firebaseConfig = {
 const firebaseApp = initializeApp(firebaseConfig);
 
 export default function Profile() {
-  const [bookedHouses, setBookedHouses] = useState([]);
-  const [user, setUser] = useState(() => JSON.parse(localStorage.getItem("user2")) || null);
-  const db = getFirestore(firebaseApp);
-
-  useEffect(() => {
-    async function fetchBookedHouses() {
+    const [bookedHouses, setBookedHouses] = useState([]);
+    const [user, setUser] = useState(() => JSON.parse(localStorage.getItem("user2")) || null);
+    const db = getFirestore(firebaseApp);
+    const navigate = useNavigate();
+  
+    const fetchBookedHouses = async () => {
       try {
         if (!user || !user.id) return;
-
+  
         const userRef = doc(db, "Users", user.id);
         const userDoc = await getDoc(userRef);
         const userData = userDoc.data();
-
+  
         if (userData && userData.bookedHouse) {
           const houseRef = doc(db, "Houses", userData.bookedHouse);
           const houseDoc = await getDoc(houseRef);
           const houseData = houseDoc.data();
-
+  
           if (houseData) {
             const bookedHouse = {
               id: houseDoc.id,
               ...houseData,
-              bookedDates: userData.bookedDates || [], // assuming bookedDates is an array in the Users collection
+              bookedDates: userData.bookedDates || [],
             };
-
+  
             setBookedHouses([bookedHouse]);
           }
         }
       } catch (error) {
         console.error("Error fetching booked houses:", error);
       }
-    }
-
-    fetchBookedHouses();
-  }, [db, user]);
+    };
+  
+    useEffect(() => {
+      fetchBookedHouses();
+    }, [db, user]);
+  
+    const handleDeleteBooking = async () => {
+        try {
+          if (!user || !user.id) return;
+      
+          const userRef = doc(db, "Users", user.id);
+          const userDoc = await getDoc(userRef);
+      
+          if (userDoc.exists()) {
+            const userData = userDoc.data();
+            const bookedHouseId = userData.bookedHouse;
+            console.log("bookedHouseId:", bookedHouseId); // Check the value of bookedHouseId
+      
+            if (bookedHouseId) {
+              const houseRef = doc(db, "Houses", bookedHouseId);
+              const houseDoc = await getDoc(houseRef);
+      
+              if (houseDoc.exists()) {
+                const houseData = houseDoc.data();
+                const updatedBookedDates = houseData.bookedDates.filter((date) => !userData.bookedDates.includes(date));
+      
+                await setDoc(houseRef, { bookedDates: updatedBookedDates }, { merge: true });
+                await setDoc(userRef, { bookedHouse: null, bookedDates: [] }, { merge: true });
+      
+                setUser({ ...user, bookedHouse: null, bookedDates: [] });
+                setBookedHouses([]);
+                alert("Booking deleted successfully!");
+              } else {
+                console.log("House document does not exist!");
+              }
+            } else {
+              console.log("No booked house found for the user!");
+            }
+          } else {
+            console.log("User document does not exist!");
+          }
+        } catch (error) {
+          console.error("Error deleting booking:", error);
+        }
+      };
 
   return (
     <div className="Profile">
@@ -61,6 +102,7 @@ export default function Profile() {
       {bookedHouses.map((house) => (
         <div key={house.id}>
           <h2>{house.name}</h2>
+          <img src={house.imageUrl} alt={house.name} />
           <p>Description: {house.description}</p>
           <p>Address: {house.address}</p>
           <p>Booked Dates:</p>
@@ -69,6 +111,7 @@ export default function Profile() {
               <li key={index}>{date}</li>
             ))}
           </ul>
+          <button onClick={handleDeleteBooking}>Delete Booking</button>
         </div>
       ))}
     </div>
