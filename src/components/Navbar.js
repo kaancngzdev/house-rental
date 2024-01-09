@@ -22,7 +22,6 @@ export default function ButtonAppBar() {
   };
 
   const handleClose = (event) => {
-    
     if (anchorRef.current && anchorRef.current.contains(event.target)) {
       return;
     }
@@ -39,8 +38,8 @@ export default function ButtonAppBar() {
       setOpen(false);
     }
   }
-  function handleSignOut(){
-    localStorage.removeItem('auth');
+  function handleSignOut() {
+    localStorage.removeItem("auth");
     window.location.reload(false);
   }
 
@@ -55,8 +54,12 @@ export default function ButtonAppBar() {
   }, [open]);
 
   const navigate = useNavigate();
-  const [isLoggedIn, setIsLoggedIn] =  React.useState(() => JSON.parse(localStorage.getItem('auth')) || false);
-  const [user, setUser] = React.useState(() => JSON.parse(localStorage.getItem('user2')) || null);
+  const [isLoggedIn, setIsLoggedIn] = React.useState(
+    () => JSON.parse(localStorage.getItem("auth")) || false
+  );
+  const [user, setUser] = React.useState(
+    () => JSON.parse(localStorage.getItem("user2")) || null
+  );
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -96,71 +99,87 @@ export default function ButtonAppBar() {
             </Button>
           </div>
           <Box sx={{ marginLeft: "auto" }}>
-          {!isLoggedIn &&<Button color="inherit" onClick={() => navigate("/signin")}>
-              Sign In
-            </Button>}
-            {!isLoggedIn &&<Button color="inherit" onClick={() => navigate("/signup")}>
-              Sign Up
-            </Button>}
+            {!isLoggedIn && (
+              <Button color="inherit" onClick={() => navigate("/signin")}>
+                Sign In
+              </Button>
+            )}
+            {!isLoggedIn && (
+              <Button color="inherit" onClick={() => navigate("/signup")}>
+                Sign Up
+              </Button>
+            )}
           </Box>
           <Stack direction="row" spacing={2}>
-          {isLoggedIn &&<div>
-              <Button
-                ref={anchorRef}
-                id="composition-button"
-                aria-controls={open ? "composition-menu" : undefined}
-                aria-expanded={open ? "true" : undefined}
-                aria-haspopup="true"
-                onClick={handleToggle}
-                sx={{ color: "white" }}
-              >
-                User
-              </Button>
-              <Popper
-                open={open}
-                anchorEl={anchorRef.current}
-                role={undefined}
-                placement="bottom-start"
-                transition
-                disablePortal
-              >
-                {({ TransitionProps, placement }) => (
-                  <Grow
-                    {...TransitionProps}
-                    style={{
-                      transformOrigin:
-                        placement === "bottom-start"
-                          ? "left top"
-                          : "left bottom",
-                    }}
-                  >
-                    <Paper>
-                      <ClickAwayListener onClickAway={handleClose}>
-                        <MenuList
-                          autoFocusItem={open}
-                          id="composition-menu"
-                          aria-labelledby="composition-button"
-                          onKeyDown={handleListKeyDown}
-                        >
-                          {console.log("User Role:", user.role)}
-                        {user.role === "admin" && (
-                          <MenuItem
-                            onClick={(event) => {
-                              navigate("/adminpanel");
-                              handleClose(event);
-                            }}
+            {isLoggedIn && (
+              <div>
+                <Button
+                  ref={anchorRef}
+                  id="composition-button"
+                  aria-controls={open ? "composition-menu" : undefined}
+                  aria-expanded={open ? "true" : undefined}
+                  aria-haspopup="true"
+                  onClick={handleToggle}
+                  sx={{ color: "white" }}
+                >
+                  User
+                </Button>
+                <Popper
+                  open={open}
+                  anchorEl={anchorRef.current}
+                  role={undefined}
+                  placement="bottom-start"
+                  transition
+                  disablePortal
+                >
+                  {({ TransitionProps, placement }) => (
+                    <Grow
+                      {...TransitionProps}
+                      style={{
+                        transformOrigin:
+                          placement === "bottom-start"
+                            ? "left top"
+                            : "left bottom",
+                      }}
+                    >
+                      <Paper>
+                        <ClickAwayListener onClickAway={handleClose}>
+                          <MenuList
+                            autoFocusItem={open}
+                            id="composition-menu"
+                            aria-labelledby="composition-button"
+                            onKeyDown={handleListKeyDown}
                           >
-                            Admin Panel
-                          </MenuItem>
-                        )}
-                          <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
-                        </MenuList>
-                      </ClickAwayListener>
-                    </Paper>
-                  </Grow>
-                )}
-              </Popper>
-            </div>}
+                            <MenuItem
+                              onClick={(event) => {
+                                navigate("/profile");
+                                handleClose(event);
+                              }}
+                            >
+                              Profile
+                            </MenuItem>
+                            {console.log("User Role:", user.role)}
+                            {user.role === "admin" && (
+                              <MenuItem
+                                onClick={(event) => {
+                                  navigate("/adminpanel");
+                                  handleClose(event);
+                                }}
+                              >
+                                Admin Panel
+                              </MenuItem>
+                            )}
+                            <MenuItem onClick={handleSignOut}>
+                              Sign Out
+                            </MenuItem>
+                          </MenuList>
+                        </ClickAwayListener>
+                      </Paper>
+                    </Grow>
+                  )}
+                </Popper>
+              </div>
+            )}
           </Stack>
         </Toolbar>
       </AppBar>
