@@ -49,7 +49,6 @@ export default function DeleteBooking() {
       try {
         const houseRef = doc(db, "Houses", houseId);
         await setDoc(houseRef, { bookedDates: [] }, { merge: true });
-  // Filters out the house with the given houseId from the bookedHouses array
         const updatedHouses = bookedHouses.filter((house) => house.id !== houseId);
         setBookedHouses(updatedHouses);
         alert("House booking deleted successfully!");
