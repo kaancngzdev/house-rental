@@ -162,7 +162,7 @@ export default function ButtonAppBar() {
                             {user.role === "admin" && (
                               <MenuItem
                                 onClick={(event) => {
-                                  navigate("/adminpanel");
+                                  navigate("/adminpanelbuttons");
                                   handleClose(event);
                                 }}
                               >

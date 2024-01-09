@@ -11,6 +11,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { addUserToFirestore } from "../back-end/signUpFB";
+import { useNavigate } from "react-router-dom"; // Import useNavigate here
 
 function Copyright(props) {
   return (
@@ -32,6 +33,8 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignUp() {
+  const navigate = useNavigate(); // Move useNavigate inside the component function
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -47,6 +50,7 @@ export default function SignUp() {
     try {
       const result = await addUserToFirestore(userData);
       console.log("User added to Firestore:", result);
+      navigate("/signin");
       // Handle success, e.g., redirect to a new page or show a success message
     } catch (error) {
       console.error("Error adding user to Firestore:", error);

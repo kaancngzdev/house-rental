@@ -8,11 +8,18 @@ export default function MainLayout() {
     <div className="main-layout">
       <Navbar />
 
-      <main>
+      <main
+        style={{
+          minHeight: "500px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         <Outlet />
       </main>
 
-      <Footer />
+      <Footer style={{ position: "absolute", bottom: 0, width: "100%" }} />
     </div>
   );
 }

@@ -15,11 +15,12 @@ import AboutUs from "./views/AboutUs.js";
 import SignUp from "./views/SignUp.js";
 import SignIn from "./views/SignIn.js";
 import LearnMore from "./views/LearnMore.js";
-import HousePage from "./views/housePage.js";
-import AdminPanel from "./views/AdminPanel.js"
+import AdminPanel from "./views/AdminPanel.js";
+import Profile from "./views/Profile.js";
+import AdminPanelButtons from "./views/AdminPanelButtons.js";
+import DeleteHouse from "./views/DeleteHouse.js";
 // layouts
 import MainLayout from "./layouts/MainLayout.js";
-import Profile from "./views/Profile.js";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -31,8 +32,10 @@ const router = createBrowserRouter(
       <Route path="signup" element={<SignUp />} />
       <Route path="learnmore" element={<LearnMore />} />
       <Route path="adminpanel" element={<AdminPanel />} />
+      <Route path="deletehouse" element={<DeleteHouse />} />
       <Route path="profile" element={<Profile />} />
-      <Route path="learnmore/:id" element={<LearnMore />} /> {/* Use element prop */}
+      <Route path="learnmore/:id" element={<LearnMore />} />
+      <Route path="adminpanelbuttons" element={<AdminPanelButtons />} />
       {/* Use element prop */}
     </Route>
   )

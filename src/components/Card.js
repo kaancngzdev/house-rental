@@ -75,9 +75,6 @@ export default function MediaCard(props) {
         <Button size="small" onClick={() => navigate(`../learnmore/${id}`)}>
           Learn More
         </Button>
-        <Button size="small" onClick={() => onAddFavorite(id)}>
-          Add Favorites
-        </Button>
       </CardActions>
     </Card>
   );

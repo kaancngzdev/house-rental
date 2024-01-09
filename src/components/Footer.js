@@ -11,7 +11,11 @@ import "mdb-react-ui-kit/dist/css/mdb.min.css";
 
 export default function Footer() {
   return (
-    <MDBFooter bgColor="light" className="text-center text-lg-start text-muted">
+    <MDBFooter
+      sx={{ position: "absolute", bottom: 0, width: "100%" }}
+      bgColor="light"
+      className="text-center text-lg-start text-muted"
+    >
       <section className="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
         <div className="me-5 d-none d-lg-block"></div>
 
