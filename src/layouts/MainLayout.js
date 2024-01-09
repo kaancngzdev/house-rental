@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import Card from "../components/Card.js";
+import Footer from "../components/Footer";
 
 export default function MainLayout() {
   return (
@@ -11,6 +11,7 @@ export default function MainLayout() {
       <main>
         <Outlet />
       </main>
+      <Footer />
     </div>
   );
 }

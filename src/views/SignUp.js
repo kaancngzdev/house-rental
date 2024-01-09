@@ -10,7 +10,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { addUserToFirestore } from '../back-end/signUpFB'; 
+import { addUserToFirestore } from "../back-end/signUpFB";
 
 function Copyright(props) {
   return (
@@ -20,10 +20,9 @@ function Copyright(props) {
       align="center"
       {...props}
     >
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
+      <Typography color="inherit" href="https://mui.com/">
         Hourent
-      </Link>{" "}
+      </Typography>{" "}
       {new Date().getFullYear()}
       {"."}
     </Typography>
@@ -42,7 +41,7 @@ export default function SignUp() {
       email: data.get("email"),
       password: data.get("password"),
       role: "user",
-      favorites: ["asdasd","asdadsasd"],
+      favorites: ["asdasd", "asdadsasd"],
     };
 
     try {

@@ -20,7 +20,7 @@ export default function SimpleSlider() {
   };
 
   const arrowHoverStyles = {
-    color: "#333",
+    color: "#333", // Change this to the desired hover color
   };
 
   return (
