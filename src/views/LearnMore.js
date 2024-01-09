@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { getFirestore, doc, getDoc } from "firebase/firestore";
+import { getFirestore, doc, getDoc, updateDoc, arrayUnion } from "firebase/firestore";
 import Box from "@mui/material/Box";
 import BasicDatePicker from "../components/DatePicker.js";
 import Button from "@mui/material/Button";
@@ -15,6 +15,7 @@ const theme = createTheme({
 export default function LearnMore() {
   const { id } = useParams();
   const [houseDetails, setHouseDetails] = useState({});
+  const [selectedDates, setSelectedDates] = useState([]);
   const db = getFirestore();
 
   useEffect(() => {
@@ -35,12 +36,71 @@ export default function LearnMore() {
     fetchHouseDetails();
   }, [db, id]);
 
-  const handleBookNowClick = () => {
-    // Add logic for booking the property
-    console.log("Book Now clicked!");
-    // You can navigate to a booking page or implement your booking logic here
+  const addDatesToBookedDates = async (start, end) => {
+    const houseRef = doc(db, "Houses", id);
+
+    const datesToAdd = [];
+    let currentDate = new Date(start);
+
+    while (currentDate <= end) {
+      datesToAdd.push(currentDate.toISOString());
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+
+    try {
+      await updateDoc(houseRef, {
+        bookedDates: arrayUnion(...datesToAdd),
+      });
+      console.log("Dates successfully added to bookedDates!");
+    } catch (error) {
+      console.error("Error adding dates to bookedDates:", error);
+    }
+  };
+  const isDateInRange = (date, start, end) => {
+    return date >= start && date <= end;
   };
 
+  const handleBookNowClick = async () => {
+    try {
+      const datesToAdd = selectedDates.map((date) =>
+        new Date(date).toISOString()
+      );
+  
+      if (datesToAdd.length === 2 && datesToAdd[0] !== datesToAdd[1]) {
+        const [start, end] = datesToAdd.map((date) => new Date(date));
+  
+        const houseRef = doc(db, "Houses", id);
+        const houseDocSnapshot = await getDoc(houseRef);
+        const houseData = houseDocSnapshot.data();
+  
+        if (houseData.bookedDates && houseData.bookedDates.length > 0) {
+          const bookedDates = houseData.bookedDates;
+  
+          const isStartOrEndBooked = bookedDates.some((bookedDate) => {
+            const date = new Date(bookedDate);
+            return isDateInRange(date, start, end);
+          });
+  
+          if (isStartOrEndBooked) {
+            const [bookedStartDate, bookedEndDate] = bookedDates.map((date) => new Date(date));
+            alert(`This house is booked between ${bookedStartDate.toDateString()} and ${bookedEndDate.toDateString()}`);
+            return;
+          }
+        }
+  
+        await addDatesToBookedDates(start, end);
+        console.log("House successfully booked!");
+      } else {
+        console.log("Please select different start and end dates.");
+      }
+    } catch (error) {
+      console.error("Error booking house:", error);
+    }
+  };
+
+  const handleDateChange = (dates) => {
+    setSelectedDates(dates);
+  };
   return (
     <ThemeProvider theme={theme}>
       <div>
@@ -76,7 +136,7 @@ export default function LearnMore() {
             marginTop: "10px",
           }}
         >
-          <BasicDatePicker />
+          <BasicDatePicker onDateChange={handleDateChange} />
           <Button
             variant="contained"
             color="primary"

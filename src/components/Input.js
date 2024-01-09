@@ -36,6 +36,7 @@ export default function BasicTextFields() {
         ...doc.data(),
       }));
       setHouses(housesData);
+      
     }
 
     fetchHouses();
@@ -59,6 +60,7 @@ export default function BasicTextFields() {
       price,
       description,
       imageUrl,
+      dates: [],
     };
 
     try {
