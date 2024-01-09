@@ -37,8 +37,12 @@ const addUserToFirestore = async (userData) => {
 
   try {
     const result = await addDoc(collection(db, "Users"), userData);
-    const userRef = doc(db, "users", result.id); // Access 'id' instead of 'userId'
-    await setDoc(userRef, userData);
+    const userRef = doc(db, "Users", result.id); // Access 'id' instead of 'userId'
+    
+    // Add the 'id' attribute to userData
+    const userDataWithId = { ...userData, id: result.id };
+
+    await setDoc(userRef, userDataWithId);
     return 'User added to Firestore';
     
   } catch (error) {

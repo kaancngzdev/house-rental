@@ -50,14 +50,33 @@ const getUserRole = async (email) => {
 
   return userRole;
 };
+const getUserId = async (email) => {
+  const usersRef = collection(db, "Users");
+  const q = query(usersRef, where("email", "==", email));
+
+  const querySnapshot = await getDocs(q);
+  if (querySnapshot.empty) {
+    throw new Error("User not found.");
+  }
+
+  let userId;
+  querySnapshot.forEach((doc) => {
+    const { id } = doc.data(); 
+    userId = id;
+  });
+
+  return userId;
+};
 
 const signInUser = async (email, password) => {
   const userExists = await checkIfUserExists(email, password);
   const userData = {
-    
     email: email,
-    role: await getUserRole(email), // Assuming you have fetched the role from the database
+    role: await getUserRole(email),
+    id: await  getUserId(email) 
   };
+  console.log(userData);
+  console.log(localStorage.getItem('user2', JSON.stringify(userData)));
   console.log(await getUserRole(email));
   localStorage.setItem('user', JSON.stringify(userData));
   localStorage.setItem('user2', JSON.stringify(userData));

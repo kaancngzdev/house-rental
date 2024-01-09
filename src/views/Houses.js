@@ -6,8 +6,9 @@ import { useNavigate } from "react-router-dom";
 import "../styles.css";
 import MediaCard from "../components/Card";
 
-import { doc, setDoc, updateDoc, getDoc } from "firebase/firestore";
+import { doc, setDoc, updateDoc,getDoc } from "firebase/firestore";
 import NestedList from "../components/Filter.js";
+
 
 // Replace these values with your actual Firebase config
 const firebaseConfig = {
@@ -54,29 +55,31 @@ export default function Houses() {
   const handleAddFavorite = async (id) => {
     try {
       const houseRef = doc(db, "Houses", id);
-      const userData = JSON.parse(localStorage.getItem("user"));
+      const userData = JSON.parse(localStorage.getItem('user'));
       const userEmail = userData.email;
-
+  
       const houseDoc = await getDoc(houseRef);
       const houseData = houseDoc.data();
-
+  
       // Get the current favorites or initialize an empty array
       const currentFavorites = houseData.favorites || [];
-
+  
       // Add the user's email to the favorites array if it doesn't exist
       if (!currentFavorites.includes(userEmail)) {
         currentFavorites.push(userEmail);
         await setDoc(houseRef, { favorites: currentFavorites });
         console.log(`House ${id} added to favorites for user ${userEmail}`);
       } else {
-        console.log(
-          `House ${id} is already in favorites for user ${userEmail}`
-        );
+        console.log(`House ${id} is already in favorites for user ${userEmail}`);
       }
     } catch (error) {
       console.error("Error adding house to favorites:", error);
     }
+
+
   };
+  
+  
 
   return (
     <div className="Houses">
@@ -94,6 +97,7 @@ export default function Houses() {
           onAddFavorite={(id) => handleAddFavorite(id)}
           onLearnMore={() => handleLearnMore(house.id)}
         ></MediaCard>
+
       ))}
     </div>
   );

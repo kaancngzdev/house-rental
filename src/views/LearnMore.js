@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { getFirestore, doc, getDoc, updateDoc, arrayUnion } from "firebase/firestore";
+import { getFirestore, doc, updateDoc, arrayUnion,getDoc } from "firebase/firestore";
 import Box from "@mui/material/Box";
 import BasicDatePicker from "../components/DatePicker.js";
 import Button from "@mui/material/Button";
@@ -16,12 +16,15 @@ export default function LearnMore() {
   const { id } = useParams();
   const [houseDetails, setHouseDetails] = useState({});
   const [selectedDates, setSelectedDates] = useState([]);
+  const [user, setUser] = React.useState(
+    () => JSON.parse(localStorage.getItem("user2")) || null
+  );
   const db = getFirestore();
 
   useEffect(() => {
     async function fetchHouseDetails() {
       try {
-        const houseDocRef = doc(db, "Houses", id);
+        const houseDocRef = doc(db, `Houses/${id}`);
         const houseDocSnapshot = await getDoc(houseDocRef);
         if (houseDocSnapshot.exists()) {
           setHouseDetails(houseDocSnapshot.data());
@@ -37,8 +40,8 @@ export default function LearnMore() {
   }, [db, id]);
 
   const addDatesToBookedDates = async (start, end) => {
-    const houseRef = doc(db, "Houses", id);
-
+    const houseRef = doc(db, `Houses/${id}`);
+    
     const datesToAdd = [];
     let currentDate = new Date(start);
 
@@ -52,10 +55,29 @@ export default function LearnMore() {
         bookedDates: arrayUnion(...datesToAdd),
       });
       console.log("Dates successfully added to bookedDates!");
+
+      // Update user's document in the 'Users' collection
+      console.log("asdasdasdas"+user.id);
+      const userRef = doc(db, "Users", user.id); // Assuming 'email' is a unique identifier
+      const userDocSnapshot = await getDoc(userRef);
+
+      if (userDocSnapshot.exists()) {
+        const userData = userDocSnapshot.data();
+        const updatedUserData = {
+          ...userData,
+          bookedHouse: id,
+          bookedDates: arrayUnion(...datesToAdd),
+        };
+        await updateDoc(userRef, updatedUserData);
+        console.log("User's document updated with booked house and dates.");
+      } else {
+        console.log("User not found in database.");
+      }
     } catch (error) {
       console.error("Error adding dates to bookedDates:", error);
     }
   };
+
   const isDateInRange = (date, start, end) => {
     return date >= start && date <= end;
   };
@@ -65,29 +87,29 @@ export default function LearnMore() {
       const datesToAdd = selectedDates.map((date) =>
         new Date(date).toISOString()
       );
-  
+
       if (datesToAdd.length === 2 && datesToAdd[0] !== datesToAdd[1]) {
         const [start, end] = datesToAdd.map((date) => new Date(date));
-  
-        const houseRef = doc(db, "Houses", id);
+
+        const houseRef = doc(db, `Houses/${id}`);
         const houseDocSnapshot = await getDoc(houseRef);
         const houseData = houseDocSnapshot.data();
-  
+
         if (houseData.bookedDates && houseData.bookedDates.length > 0) {
           const bookedDates = houseData.bookedDates;
-  
+
           const isStartOrEndBooked = bookedDates.some((bookedDate) => {
             const date = new Date(bookedDate);
             return isDateInRange(date, start, end);
           });
-  
+
           if (isStartOrEndBooked) {
             const [bookedStartDate, bookedEndDate] = bookedDates.map((date) => new Date(date));
             alert(`This house is booked between ${bookedStartDate.toDateString()} and ${bookedEndDate.toDateString()}`);
             return;
           }
         }
-  
+
         await addDatesToBookedDates(start, end);
         console.log("House successfully booked!");
       } else {

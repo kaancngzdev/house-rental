@@ -33,7 +33,6 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignIn() {
-  const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = React.useState(
     () => JSON.parse(localStorage.getItem("auth")) || false
   );
@@ -60,7 +59,6 @@ export default function SignIn() {
       setUser(userData);
       console.log(isLoggedIn);
       console.log(userData);
-      navigate("/");
       window.location.reload(false);
 
       // Redirect or do something with the signed-in user
