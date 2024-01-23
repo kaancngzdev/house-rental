@@ -20,6 +20,7 @@ const db = getFirestore(app);
 const addHouseToFirestore = async (houseData) => {
     try {
       await addDoc(collection(db, "Houses"), houseData);
+      alert("House added");
       return 'House added to Firestore';
     } catch (error) {
       throw error;

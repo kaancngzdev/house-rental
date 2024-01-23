@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, getDocs, doc, deleteDoc } from "firebase/firestore";
+import { Card, CardContent, CardActions, Button, Typography } from "@mui/material";
 import "../styles.css";
 
 // Replace these values with your actual Firebase config
@@ -60,13 +61,25 @@ export default function DeleteHouse() {
     <div className="DeleteHouse">
       <h1>Houses:</h1>
       {houses.map((house) => (
-        <div key={house.id}>
-          <h2>{house.name}</h2>
-          <img src={house.imageUrl} alt={house.name} />
-          <p>Description: {house.description}</p>
-          <p>Address: {house.address}</p>
-          <button onClick={() => handleDeleteHouse(house.id)}>Delete House</button>
-        </div>
+        <Card key={house.id} sx={{ maxWidth: 400, marginBottom: 2 }}>
+          <img src={house.imageUrl} alt={house.name} style={{ maxWidth: "100%", height: 200, objectFit: "cover" }} />
+          <CardContent>
+            <Typography gutterBottom variant="h5" component="div">
+              {house.name}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              {house.description}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Address: {house.address}
+            </Typography>
+          </CardContent>
+          <CardActions>
+            <Button size="small" color="error" onClick={() => handleDeleteHouse(house.id)}>
+              Delete House
+            </Button>
+          </CardActions>
+        </Card>
       ))}
     </div>
   );

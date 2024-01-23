@@ -39,7 +39,6 @@ const getUserRole = async (email) => {
 
   const querySnapshot = await getDocs(q);
   if (querySnapshot.empty) {
-    alert("User not found.")
     throw new Error("User not found.");
   }
 
@@ -57,7 +56,6 @@ const getUserId = async (email) => {
 
   const querySnapshot = await getDocs(q);
   if (querySnapshot.empty) {
-  
     throw new Error("User not found.");
   }
 
@@ -66,7 +64,7 @@ const getUserId = async (email) => {
     const { id } = doc.data(); 
     userId = id;
   });
-
+  console.log("auser id is : "+userId);
   return userId;
 };
 
@@ -82,6 +80,7 @@ const signInUser = async (email, password) => {
   console.log(await getUserRole(email));
   localStorage.setItem('user', JSON.stringify(userData));
   localStorage.setItem('user2', JSON.stringify(userData));
+  localStorage.setItem('user3', JSON.stringify(userData));
   localStorage.setItem('auth', JSON.stringify(true));
   let result = localStorage.getItem('user2', JSON.stringify(userData));
   console.log("asdasd"+ result);

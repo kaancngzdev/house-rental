@@ -7,7 +7,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
 
-export default function MediaCard(props) {
+export default function AdminMediaCard(props) {
   const {
     customStyle,
     description,
@@ -71,8 +71,8 @@ export default function MediaCard(props) {
           gap: "30px",
         }}
       >
-        <Button size="small" onClick={() => navigate(`../learnmore/${id}`)}>
-          Learn More
+        <Button size="small" onClick={() => onDeleteBooking(id)}>
+          Delete Booking
         </Button>
       </CardActions>
     </Card>

@@ -90,7 +90,7 @@ export default function Houses() {
           description={house.description}
           propertyType={house.propertyType}
           numberOfRooms={house.numRooms}
-          squaremeters={house.squaremeters}
+          squaremeters={house.area}
           price={house.price}
           image={house.imageUrl}
           id={house.id}
